@@ -17,7 +17,9 @@ SISTEMA DE GESTIÓN WEB DE CITAS VIRTUALES PARA LA ATENCIÓN EFICIENTE DE PACIEN
 # INSTRUCCIONES PARA CORRER EL PROYECTO   
 
 ## 1. Requerimientos de Software
+- IDE: GoLand (recomendado para este proyecto)
 - Go SDK 1.18.1
+- MySQL 8.*
 
 ## 2. Editar el Archivo .env.example
 
@@ -34,3 +36,10 @@ DB_ADDR=
 DB_PORT=
 DB_NAME=
 ```
+
+- Nota: en caso que la base de datos sea local:
+  - BD_USER=root
+  - BD_PASSWD=my_past_word
+  - BD_ADDR=127.0.0.1
+  - DB_PORT=3306
+  - DB_NAME=schema_name
