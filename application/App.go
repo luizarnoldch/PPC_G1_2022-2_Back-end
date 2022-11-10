@@ -22,7 +22,8 @@ func Start() {
 
 	// Creación de instancia Handler
 	// -- DB
-	patientDb := repositories.NewPatientDataMySQL()
+	mySQLclient := GetMySQLClient()
+	patientDb := repositories.NewPatientDataMySQL(mySQLclient)
 	// -- Service
 	pService := service.NewPatientService(patientDb)
 	// -- Handler

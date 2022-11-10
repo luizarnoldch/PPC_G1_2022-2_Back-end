@@ -3,10 +3,10 @@ package entities
 import "github.com/luizarnoldch/PPC_G1_2022-2_Back-end/domain/dto"
 
 type Patient struct {
-	PatientId       int64  `db:"patient_id"`
-	PatientName     string `db:"patient_name"`
-	PatientLastName string `db:"patient_last_name"`
-	PatientAge      int64  `db:"patient_age"`
+	PatientId       int64  `db:"id_patient"`
+	PatientName     string `db:"name_patient"`
+	PatientLastName string `db:"last_name_patient"`
+	PatientAge      int64  `db:"age_patient"`
 }
 
 func (p Patient) ToPatientResponse() *dto.PatientResponse {

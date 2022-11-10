@@ -1,6 +1,8 @@
 package repositories
 
 import (
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/jmoiron/sqlx"
 	"github.com/luizarnoldch/PPC_G1_2022-2_Back-end/domain/entities"
 )
 
@@ -13,13 +15,30 @@ type PatientRepository interface {
 }
 
 type PatientDatabaseMySQL struct {
-	//client *sqlx.DB
-	patients []entities.Patient
+	client *sqlx.DB
+	//patients []entities.Patient
 }
 
 func (db PatientDatabaseMySQL) FindAllPatients() ([]entities.Patient, error) {
-	return db.patients, nil
+	var err error
+	patients := make([]entities.Patient, 0)
+
+	patientsQuery := "SELECT * FROM posta_ppc.patients"
+
+	err = db.client.Select(&patients, patientsQuery)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return patients, nil
 }
+
+func NewPatientDataMySQL(db *sqlx.DB) PatientDatabaseMySQL {
+	return PatientDatabaseMySQL{db}
+}
+
+/*
 func NewPatientDataMySQL() PatientDatabaseMySQL {
 	patients := []entities.Patient{
 		{PatientId: 1, PatientName: "Arnold", PatientLastName: "Chavez", PatientAge: 23},
@@ -27,6 +46,7 @@ func NewPatientDataMySQL() PatientDatabaseMySQL {
 	}
 	return PatientDatabaseMySQL{patients}
 }
+*/
 
 /*
 
