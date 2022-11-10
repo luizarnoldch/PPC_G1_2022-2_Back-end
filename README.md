@@ -24,8 +24,8 @@ SISTEMA DE GESTIÓN WEB DE CITAS VIRTUALES PARA LA ATENCIÓN EFICIENTE DE PACIEN
 1. Renombrar el archivo .env.example -> .env  
 2. Agregar las cedenciales de su proyecto al formato establecido
 ```
-PORT: 
-USER:
-ROOT:
-PASSWORD:
+PORT=
+USER=
+ROOT=
+PASSWORD=
 ```

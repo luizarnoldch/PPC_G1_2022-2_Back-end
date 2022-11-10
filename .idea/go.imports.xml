@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GoImports">
+    <option name="excludedPackages">
+      <array>
+        <option value="github.com/luizarnoldch/PPC_G1_2022-2_Back-end/domain/entities" />
+        <option value="github.com/luizarnoldch/PPC_G1_2022-2_Back-end/domain/entities" />
+      </array>
+    </option>
+  </component>
+</project>
