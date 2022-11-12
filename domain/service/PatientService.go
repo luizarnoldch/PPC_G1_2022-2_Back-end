@@ -7,7 +7,7 @@ import (
 
 type PacientService interface {
 	GetAllPatients() ([]dto.PatientResponse, error)
-	//GetPatient(id int64) (*dto.PatientResponse, error)
+	GetPatient(id int64) (*dto.PatientResponse, error)
 }
 
 type DefaultPacientService struct {
@@ -30,13 +30,12 @@ func (s DefaultPacientService) GetAllPatients() ([]dto.PatientResponse, error) {
 	return response, nil
 }
 
-/*
 func (s DefaultPacientService) GetPatient(id int64) (*dto.PatientResponse, error) {
 	patient, err := s.db.FinPatientById(id)
 	if err != nil {
 		return nil, err
 	}
-	response := patient
+	response := *patient.ToPatientResponse()
+
 	return &response, nil
 }
-*/
