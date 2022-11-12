@@ -5,15 +5,16 @@ import (
 	"errors"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
+	"github.com/luizarnoldch/PPC_G1_2022-2_Back-end/domain/dto"
 	"github.com/luizarnoldch/PPC_G1_2022-2_Back-end/domain/entities"
 )
 
 type PatientRepository interface {
 	FindAllPatients() ([]entities.Patient, error)
 	FinPatientById(id int64) (*entities.Patient, error)
-	SavePatient(patient entities.Patient) ([]entities.Patient, error)
-	//UpdatePatient(patient entities.Patient) ([]entities.Patient, error)
-	//DeletePatient(id int64) ([]entities.Patient, error)
+	SavePatient(req dto.PatientRequest) (*entities.Patient, error)
+	UpdatePatient(id int64, req dto.PatientRequest) (*entities.Patient, error)
+	//DeletePatient(id int64) (*entities.Patient, error)
 }
 
 type PatientDatabaseMySQL struct {
@@ -55,17 +56,41 @@ func (db PatientDatabaseMySQL) FinPatientById(id int64) (*entities.Patient, erro
 	return &patient, nil
 }
 
-func (db PatientDatabaseMySQL) SavePatient(patient entities.Patient) ([]entities.Patient, error) {
-	patients := []entities.Patient{
-		{1, "Arnold", "Chavez", 23},
-		{2, "Kevin", "Burgos", 21},
+func (db PatientDatabaseMySQL) SavePatient(req dto.PatientRequest) (*entities.Patient, error) {
+	patientQuery := `INSERT INTO 
+    					patients (name_patient, last_name_patient, age_patient) 
+						VALUES(?,?,?)`
+	res, err := db.client.Exec(patientQuery, req.PatientName, req.PatientLastName, req.PatientAge)
+	if err != nil {
+		return nil, errors.New("Error while saving patient")
+	}
+	id, errId := res.LastInsertId()
+	if errId != nil {
+		return nil, errors.New("Error while getting id from patient")
 	}
 
-	patients.append(patient)
+	patient := entities.Patient{id, req.PatientName, req.PatientLastName, req.PatientAge}
 
-	return patients, nil
+	return &patient, nil
 }
 
+func (db PatientDatabaseMySQL) UpdatePatient(id int64, req dto.PatientRequest) (*entities.Patient, error) {
+	patientQuery := `UPDATE patients p
+    					SET name_patient = ?,
+    					last_name_patient = ?,
+    					age_patient = ?
+    					WHERE p.id_patient = ?`
+	patientUpdate, err := db.client.Exec(patientQuery, req.PatientName, req.PatientLastName, req.PatientAge, id)
+	if err != nil {
+		return nil, errors.New("Error while updating patient")
+	}
+	patientID, errID := patientUpdate.LastInsertId()
+	if errID != nil {
+		return nil, errors.New("Error while getting id from patient")
+	}
+	patient := entities.NewPatient(patientID, req.PatientName, req.PatientLastName, req.PatientAge)
+	return &patient, nil
+}
 func NewPatientDataMySQL(db *sqlx.DB) PatientDatabaseMySQL {
 	return PatientDatabaseMySQL{db}
 }
@@ -86,13 +111,7 @@ func NewPatientDataMySQL() PatientDatabaseMySQL {
 
 
 
-func (db PatientDatabaseMySQL) UpdatePatient(patient entities.Patient) ([]entities.Patient, error) {
-	patients := []entities.Patient{
-		{1, "Arnold", "Chavez", 23},
-		{2, "Kevin", "Burgos", 21},
-	}
-	return patients, nil
-}
+
 
 func (db PatientDatabaseMySQL) DeletePatient(id int64) (*entities.Patient, error) {
 	patients := []entities.Patient{

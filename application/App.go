@@ -31,7 +31,7 @@ func Start() {
 
 	app.Get("/", pHandler.GetAllPatient)
 	app.Get("/:idPatient", pHandler.GetPatient)
-	app.Post("/:idPatient", pHandler.PostPatient)
+	app.Post("/", pHandler.PostPatient)
 	app.Put("/:idPatient", pHandler.PutPatient)
 	app.Delete("/:idPatient", pHandler.DeletePatient)
 
