@@ -3,6 +3,7 @@ package application
 import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 	"github.com/luizarnoldch/PPC_G1_2022-2_Back-end/domain/repositories"
@@ -19,6 +20,12 @@ func Start() {
 	}
 
 	app := fiber.New()
+	app.Use(cors.New())
+	/*
+		app.Use(cors.New(cors.config{
+			AllowHeaders: "Content-Type, Origin, Accept"
+		}))
+	*/
 
 	// Creación de instancia Handler
 	// -- DB

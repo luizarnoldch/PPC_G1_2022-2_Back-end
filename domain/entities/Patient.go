@@ -10,7 +10,11 @@ type Patient struct {
 }
 
 func (p Patient) ToPatientResponse() *dto.PatientResponse {
-	return &dto.PatientResponse{PatientId: p.PatientId}
+	return &dto.PatientResponse{PatientId: p.PatientId, PatientName: p.PatientName, PatientLastName: p.PatientLastName, PatientAge: p.PatientAge}
+}
+
+func (p Patient) ToPatientMessage(id int64, message string) *dto.PatientMessage {
+	return &dto.PatientMessage{PatientId: id, PatientMessage: message}
 }
 
 func NewPatient(patientId int64, patientName string, patientLastName string, patientAge int64) Patient {

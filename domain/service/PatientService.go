@@ -9,8 +9,9 @@ import (
 type PacientService interface {
 	GetAllPatients() ([]dto.PatientResponse, error)
 	GetPatient(id int64) (*dto.PatientResponse, error)
-	PostPatient(request dto.PatientRequest) (*dto.PatientResponse, error)
-	UpdatePatient(id int64, request dto.PatientRequest) (*dto.PatientResponse, error)
+	PostPatient(request dto.PatientRequest) (*dto.PatientMessage, error)
+	UpdatePatient(id int64, request dto.PatientRequest) (*dto.PatientMessage, error)
+	DeletePatient(id int64) (*dto.PatientMessage, error)
 }
 
 type DefaultPacientService struct {
@@ -43,28 +44,37 @@ func (s DefaultPacientService) GetPatient(id int64) (*dto.PatientResponse, error
 	return &response, nil
 }
 
-func (s DefaultPacientService) PostPatient(req dto.PatientRequest) (*dto.PatientResponse, error) {
+func (s DefaultPacientService) PostPatient(req dto.PatientRequest) (*dto.PatientMessage, error) {
 
 	if req.IsUnderAge() {
-		return nil, errors.New("Patient under 18 age")
+		return nil, errors.New("patient under 18 age")
 	}
 
 	patientSave, err := s.db.SavePatient(req)
 	if err != nil {
-		return nil, errors.New("Can't Save Patient")
+		return nil, errors.New("can't Save Patient")
 	}
-	response := *patientSave.ToPatientResponse()
+	response := *patientSave.ToPatientMessage(patientSave.PatientId, "patient saved")
 	return &response, nil
 }
 
-func (s DefaultPacientService) UpdatePatient(id int64, req dto.PatientRequest) (*dto.PatientResponse, error) {
+func (s DefaultPacientService) UpdatePatient(id int64, req dto.PatientRequest) (*dto.PatientMessage, error) {
 	if req.IsUnderAge() {
-		return nil, errors.New("Patient under 18 age")
+		return nil, errors.New("patient under 18 age")
 	}
 	patientUpdate, err := s.db.UpdatePatient(id, req)
 	if err != nil {
-		return nil, errors.New("Can't Save Patient")
+		return nil, errors.New("can't update Patient")
 	}
-	response := *patientUpdate.ToPatientResponse()
+	response := *patientUpdate.ToPatientMessage(id, "patient updated")
+	return &response, nil
+}
+
+func (s DefaultPacientService) DeletePatient(id int64) (*dto.PatientMessage, error) {
+	patient, err := s.db.DeletePatient(id)
+	if err != nil {
+		return nil, err
+	}
+	response := *patient.ToPatientMessage(id, "patient deleted")
 	return &response, nil
 }

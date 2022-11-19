@@ -64,5 +64,14 @@ func (ch PacientHandler) PutPatient(c *fiber.Ctx) error {
 }
 
 func (ch PacientHandler) DeletePatient(c *fiber.Ctx) error {
-	return c.JSON("Paciente : " + c.Params("idClient") + " elimination")
+	id := c.Params("idPatient")
+	idInt, errParse := strconv.ParseInt(id, 10, 64)
+	if errParse != nil {
+		return errParse
+	}
+	res, errService := ch.service.DeletePatient(idInt)
+	if errService != nil {
+		return errService
+	}
+	return c.JSON(res)
 }

@@ -14,12 +14,11 @@ type PatientRepository interface {
 	FinPatientById(id int64) (*entities.Patient, error)
 	SavePatient(req dto.PatientRequest) (*entities.Patient, error)
 	UpdatePatient(id int64, req dto.PatientRequest) (*entities.Patient, error)
-	//DeletePatient(id int64) (*entities.Patient, error)
+	DeletePatient(id int64) (*entities.Patient, error)
 }
 
 type PatientDatabaseMySQL struct {
 	client *sqlx.DB
-	//patients []entities.Patient
 }
 
 func (db PatientDatabaseMySQL) FindAllPatients() ([]entities.Patient, error) {
@@ -47,11 +46,11 @@ func (db PatientDatabaseMySQL) FinPatientById(id int64) (*entities.Patient, erro
 	err = db.client.Get(&patient, patientQuery, id)
 
 	if err == sql.ErrNoRows {
-		return nil, errors.New("No patient found")
+		return nil, errors.New("no patient found")
 	}
 
 	if err != nil {
-		return nil, errors.New("Unexpected database error")
+		return nil, errors.New("unexpected database error")
 	}
 	return &patient, nil
 }
@@ -62,11 +61,11 @@ func (db PatientDatabaseMySQL) SavePatient(req dto.PatientRequest) (*entities.Pa
 						VALUES(?,?,?)`
 	res, err := db.client.Exec(patientQuery, req.PatientName, req.PatientLastName, req.PatientAge)
 	if err != nil {
-		return nil, errors.New("Error while saving patient")
+		return nil, errors.New("error while saving patient")
 	}
 	id, errId := res.LastInsertId()
 	if errId != nil {
-		return nil, errors.New("Error while getting id from patient")
+		return nil, errors.New("error while getting id from patient")
 	}
 
 	patient := entities.Patient{id, req.PatientName, req.PatientLastName, req.PatientAge}
@@ -82,15 +81,42 @@ func (db PatientDatabaseMySQL) UpdatePatient(id int64, req dto.PatientRequest) (
     					WHERE p.id_patient = ?`
 	patientUpdate, err := db.client.Exec(patientQuery, req.PatientName, req.PatientLastName, req.PatientAge, id)
 	if err != nil {
-		return nil, errors.New("Error while updating patient")
+		return nil, errors.New("error while updating patient")
+	}
+	rows, errNoRow := patientUpdate.RowsAffected()
+	if errNoRow != nil {
+		return nil, errors.New("error while getting updated rows")
+	}
+	if rows == 0 {
+		return nil, errors.New("no patient updated")
 	}
 	patientID, errID := patientUpdate.LastInsertId()
 	if errID != nil {
-		return nil, errors.New("Error while getting id from patient")
+		return nil, errors.New("error while getting id from patient")
 	}
 	patient := entities.NewPatient(patientID, req.PatientName, req.PatientLastName, req.PatientAge)
 	return &patient, nil
 }
+
+func (db PatientDatabaseMySQL) DeletePatient(id int64) (*entities.Patient, error) {
+	var patient entities.Patient
+	patientQuery := "DELETE FROM posta_ppc.patients WHERE id_patient = ?"
+
+	patientDelete, errDelete := db.client.Exec(patientQuery, id)
+	if errDelete != nil {
+		return nil, errors.New("error while deleting the patient")
+	}
+	rows, errNoRow := patientDelete.RowsAffected()
+	if errNoRow != nil {
+		return nil, errors.New("error while getting deleted rows")
+	}
+	if rows == 0 {
+		return nil, errors.New("no patient deleted")
+	}
+	patient.PatientId = id
+	return &patient, nil
+}
+
 func NewPatientDataMySQL(db *sqlx.DB) PatientDatabaseMySQL {
 	return PatientDatabaseMySQL{db}
 }
@@ -102,22 +128,5 @@ func NewPatientDataMySQL() PatientDatabaseMySQL {
 		{PatientId: 2, PatientName: "Kevin", PatientLastName: "Burgos", PatientAge: 21},
 	}
 	return PatientDatabaseMySQL{patients}
-}
-*/
-
-/*
-
-
-
-
-
-
-
-func (db PatientDatabaseMySQL) DeletePatient(id int64) (*entities.Patient, error) {
-	patients := []entities.Patient{
-		{1, "Arnold", "Chavez", 23},
-		{2, "Kevin", "Burgos", 21},
-	}
-	return patients, nil
 }
 */
