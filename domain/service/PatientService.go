@@ -3,7 +3,9 @@ package service
 import (
 	"errors"
 	"github.com/luizarnoldch/PPC_G1_2022-2_Back-end/domain/dto"
+	"github.com/luizarnoldch/PPC_G1_2022-2_Back-end/domain/entities"
 	"github.com/luizarnoldch/PPC_G1_2022-2_Back-end/domain/repositories"
+	"time"
 )
 
 type PacientService interface {
@@ -23,14 +25,39 @@ func NewPatientService(db repositories.PatientRepository) DefaultPacientService 
 }
 
 func (s DefaultPacientService) GetAllPatients() ([]dto.PatientResponse, error) {
+	/*
+		patients, err := s.db.FindAllPatients()
+		if err != nil {
+			return nil, err
+		}
+		response := make([]dto.PatientResponse, 0)
+		for _, p := range patients {
+			response = append(response, *p.ToPatientResponse())
+		}
+
+	*/
+
 	patients, err := s.db.FindAllPatients()
 	if err != nil {
 		return nil, err
 	}
+
+	c := make(chan dto.PatientResponse, len(patients))
 	response := make([]dto.PatientResponse, 0)
-	for _, p := range patients {
-		response = append(response, *p.ToPatientResponse())
+
+	PatientToResponse := func(c chan<- dto.PatientResponse, patient entities.Patient) {
+		time.Sleep(time.Second * 1)
+		c <- *patient.ToPatientResponse()
 	}
+
+	for _, p := range patients {
+		go PatientToResponse(c, p)
+	}
+
+	for range patients { // This also works beautifully, using blocking code.  It stays here until every message in the channel is read.
+		response = append(response, <-c)
+	}
+
 	return response, nil
 }
 

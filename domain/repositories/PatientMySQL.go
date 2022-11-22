@@ -7,6 +7,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/luizarnoldch/PPC_G1_2022-2_Back-end/domain/dto"
 	"github.com/luizarnoldch/PPC_G1_2022-2_Back-end/domain/entities"
+	"sync"
 )
 
 type PatientRepository interface {
@@ -21,17 +22,41 @@ type PatientDatabaseMySQL struct {
 	client *sqlx.DB
 }
 
+var wg = sync.WaitGroup{}
+
 func (db PatientDatabaseMySQL) FindAllPatients() ([]entities.Patient, error) {
+	//start := time.Now()
+
 	var err error
 	patients := make([]entities.Patient, 0)
-
 	patientsQuery := "SELECT * FROM posta_ppc.patients"
-
 	err = db.client.Select(&patients, patientsQuery)
-
 	if err != nil {
 		return nil, err
 	}
+
+	//En el caso de ser solo 1 consulta no hya optimización en el tiempo
+	/*
+		wg.Add(1)
+		var err error
+		patients := make([]entities.Patient, 0)
+
+		go func(errIn error) error {
+			patientsQuery := "SELECT * FROM posta_ppc.patients"
+			errIn = db.client.Select(&patients, patientsQuery)
+			wg.Done()
+			return errIn
+		}(err)
+
+		if err != nil {
+			return nil, err
+		}
+		wg.Wait()
+
+	*/
+
+	//elapsed := time.Since(start)
+	//fmt.Printf("Processes took %s", elapsed)
 
 	return patients, nil
 }
