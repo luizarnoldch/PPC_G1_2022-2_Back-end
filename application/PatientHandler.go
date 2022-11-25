@@ -1,13 +1,10 @@
 package application
 
 import (
-	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/luizarnoldch/PPC_G1_2022-2_Back-end/domain/dto"
 	"github.com/luizarnoldch/PPC_G1_2022-2_Back-end/domain/service"
 	"strconv"
-	"sync"
-	"time"
 )
 
 // Esturctura de datos que instaciará los servicios /*IMPORT*/
@@ -16,16 +13,11 @@ type PacientHandler struct {
 	service service.PacientService
 }
 
-var wg = sync.WaitGroup{}
-
 func (ch PacientHandler) GetAllPatient(c *fiber.Ctx) error {
-	start := time.Now()
 	res, err := ch.service.GetAllPatients()
 	if err != nil {
 		return err
 	}
-	elapsed := time.Since(start)
-	fmt.Printf("Processes took %s", elapsed)
 	return c.JSON(res)
 }
 
