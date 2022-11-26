@@ -7,69 +7,67 @@ import (
 	"strconv"
 )
 
-// Esturctura de datos que instaciará los servicios /*IMPORT*/
-
-type PacientHandler struct {
-	service service.PacientService
+type AreaHandler struct {
+	service service.AreaService
 }
 
-func (ph PacientHandler) GetAllPatient(c *fiber.Ctx) error {
-	res, err := ph.service.GetAllPatients()
+func (ah AreaHandler) GetAllAreas(c *fiber.Ctx) error {
+	res, err := ah.service.GetAllAreas()
 	if err != nil {
 		return err
 	}
 	return c.JSON(res)
 }
 
-func (ph PacientHandler) GetPatient(c *fiber.Ctx) error {
-	id := c.Params("idPatient")
+func (ah AreaHandler) GetArea(c *fiber.Ctx) error {
+	id := c.Params("idArea")
 	idInt, errParse := strconv.ParseInt(id, 10, 64)
 	if errParse != nil {
 		return errParse
 	}
-	res, errService := ph.service.GetPatient(idInt)
+	res, errService := ah.service.GetArea(idInt)
 	if errService != nil {
 		return errService
 	}
 	return c.JSON(res)
 }
 
-func (ph PacientHandler) PostPatient(c *fiber.Ctx) error {
-	req := new(dto.PatientRequest)
+func (ah AreaHandler) PostArea(c *fiber.Ctx) error {
+	req := new(dto.AreaRequest)
 	if err := c.BodyParser(req); err != nil {
 		return err
 	}
-	res, errService := ph.service.PostPatient(*req)
+	res, errService := ah.service.PostArea(*req)
 	if errService != nil {
 		return errService
 	}
 	return c.JSON(res)
 }
 
-func (ph PacientHandler) PutPatient(c *fiber.Ctx) error {
-	id := c.Params("idPatient")
+func (ah AreaHandler) PutArea(c *fiber.Ctx) error {
+	id := c.Params("idArea")
 	idInt, errParse := strconv.ParseInt(id, 10, 64)
 	if errParse != nil {
 		return errParse
 	}
-	req := new(dto.PatientRequest)
+	req := new(dto.AreaRequest)
 	if err := c.BodyParser(req); err != nil {
 		return err
 	}
-	res, errService := ph.service.UpdatePatient(idInt, *req)
+	res, errService := ah.service.UpdateArea(idInt, *req)
 	if errService != nil {
 		return errService
 	}
 	return c.JSON(res)
 }
 
-func (ph PacientHandler) DeletePatient(c *fiber.Ctx) error {
-	id := c.Params("idPatient")
+func (ah AreaHandler) DeleteArea(c *fiber.Ctx) error {
+	id := c.Params("idArea")
 	idInt, errParse := strconv.ParseInt(id, 10, 64)
 	if errParse != nil {
 		return errParse
 	}
-	res, errService := ph.service.DeletePatient(idInt)
+	res, errService := ah.service.DeleteArea(idInt)
 	if errService != nil {
 		return errService
 	}

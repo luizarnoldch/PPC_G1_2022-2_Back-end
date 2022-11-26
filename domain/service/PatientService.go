@@ -170,7 +170,6 @@ func (s DefaultPacientService) GetAllPatients() ([]dto.PatientResponse, error) {
 	*/
 
 	// WaitGroup + Chanel
-
 	start := time.Now()
 	var n sync.WaitGroup
 	//var mutex = sync.Mutex{}
@@ -193,7 +192,7 @@ func (s DefaultPacientService) GetAllPatients() ([]dto.PatientResponse, error) {
 		}(patient)
 	}
 	n.Wait()
-	for len(c) > 0 {
+	for range patients {
 		response = append(response, <-c)
 	}
 	close(c)

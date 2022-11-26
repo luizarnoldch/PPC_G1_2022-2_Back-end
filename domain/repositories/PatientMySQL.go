@@ -26,12 +26,11 @@ type PatientDatabaseMySQL struct {
 func (db PatientDatabaseMySQL) FindAllPatients() ([]entities.Patient, error) {
 	//start := time.Now()
 
-	var err error
 	patients := make([]entities.Patient, 0)
 	patientsQuery := "SELECT * FROM posta_ppc.paciente"
-	err = db.client.Select(&patients, patientsQuery)
+	err := db.client.Select(&patients, patientsQuery)
 	if err != nil {
-		return nil, err
+		return nil, errors.New("error while getting all areas")
 	}
 
 	//En el caso de ser solo 1 consulta no hya optimización en el tiempo
@@ -60,12 +59,11 @@ func (db PatientDatabaseMySQL) FindAllPatients() ([]entities.Patient, error) {
 
 func (db PatientDatabaseMySQL) FinPatientById(id int64) (*entities.Patient, error) {
 
-	var err error
 	var patient entities.Patient
 
 	patientQuery := "SELECT * FROM posta_ppc.paciente WHERE ID_Paciente = ?"
 
-	err = db.client.Get(&patient, patientQuery, id)
+	err := db.client.Get(&patient, patientQuery, id)
 
 	if err == sql.ErrNoRows {
 		return nil, errors.New("no patient found")
@@ -79,23 +77,22 @@ func (db PatientDatabaseMySQL) FinPatientById(id int64) (*entities.Patient, erro
 
 func (db PatientDatabaseMySQL) SavePatient(req dto.PatientRequest) (*entities.Patient, error) {
 	patientQuery := `INSERT INTO 
-    					paciente (
-							Nombre_Paciente,
-							Apellido_Paciente,
-							Nick_Paciente,
-							Clave_Paciente,
-							Foto_Paciente,
-							Nacionalidad_Paciente,
-							DATE_Nac_Paciente,
-							Email_Paciente,
-							Telefono_Paciente,
-							Celular_Paciente,
-							Cedula_Paciente,
-							Desc_Paciente,
-							Archivo_Paciente,
-							Estado_Paciente,
-							Tag_Paciente) 
-						VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+		posta_ppc.paciente (Nombre_Paciente,
+			Apellido_Paciente,
+			Nick_Paciente,
+			Clave_Paciente,
+			Foto_Paciente,
+			Nacionalidad_Paciente,
+			DATE_Nac_Paciente,
+			Email_Paciente,
+			Telefono_Paciente,
+			Celular_Paciente,
+			Cedula_Paciente,
+			Desc_Paciente,
+			Archivo_Paciente,
+			Estado_Paciente,
+			Tag_Paciente) 
+		VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
 	res, err := db.client.Exec(
 		patientQuery,
 		req.PatientName,

@@ -31,16 +31,27 @@ func Start() {
 	// -- DB
 	mySQLclient := GetMySQLClient()
 	patientDb := repositories.NewPatientDataMySQL(mySQLclient)
+	areaDb := repositories.NewAreaDataMySQL(mySQLclient)
 	// -- Service
-	pService := service.NewPatientService(patientDb)
+	patientService := service.NewPatientService(patientDb)
+	areaService := service.NewAreaService(areaDb)
 	// -- Handler
-	pHandler := PacientHandler{pService}
+	patientHandler := PacientHandler{patientService}
+	areaHandler := AreaHandler{areaService}
 
-	app.Get("/", pHandler.GetAllPatient)
-	app.Get("/:idPatient", pHandler.GetPatient)
-	app.Post("/", pHandler.PostPatient)
-	app.Put("/:idPatient", pHandler.PutPatient)
-	app.Delete("/:idPatient", pHandler.DeletePatient)
+	apiPacient := app.Group("/paciente")
+	apiPacient.Get("/", patientHandler.GetAllPatient)
+	apiPacient.Get("/:idPatient", patientHandler.GetPatient)
+	apiPacient.Post("/", patientHandler.PostPatient)
+	apiPacient.Put("/:idPatient", patientHandler.PutPatient)
+	apiPacient.Delete("/:idPatient", patientHandler.DeletePatient)
+
+	apiArea := app.Group("/area")
+	apiArea.Get("/", areaHandler.GetAllAreas)
+	apiArea.Get("/:idArea", areaHandler.GetArea)
+	apiArea.Post("/", areaHandler.PostArea)
+	apiArea.Put("/:idArea", areaHandler.PutArea)
+	apiArea.Delete("/:idArea", areaHandler.DeleteArea)
 
 	PORT := os.Getenv("PORT")
 

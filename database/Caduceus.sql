@@ -1,7 +1,7 @@
 USE posta_ppc;
 
 CREATE TABLE Paciente(
-	ID_Paciente INT PRIMARY KEY,
+	ID_Paciente INT PRIMARY KEY auto_increment,
 	Nombre_Paciente NVARCHAR(128),
 	Apellido_Paciente NVARCHAR(128),
 	Nick_Paciente NVARCHAR(100),
@@ -20,16 +20,16 @@ CREATE TABLE Paciente(
 );
 
 CREATE TABLE Perfil(
-	ID_Perfil INT PRIMARY KEY,
+	ID_Perfil INT PRIMARY KEY auto_increment,
 	Nombre_Perfil NVARCHAR(100),
 	Estado_Perfil INT,
 	Atributos_Perfil NVARCHAR(100)
 );
 
 CREATE TABLE Area(
-	ID_Area INT PRIMARY KEY,
+	ID_Area INT PRIMARY KEY auto_increment,
 	Nombre_Area NVARCHAR(128),
-	Ubicacion_area NVARCHAR(128),
+	Ubicacion_Area NVARCHAR(128),
 	Localidades_Area TEXT,
 	Ciudad_Area NVARCHAR(128),
 	Pais_Area NVARCHAR(128),
@@ -39,7 +39,7 @@ CREATE TABLE Area(
 );
 
 CREATE TABLE Usuario(
-	ID_Usuario INT PRIMARY KEY,
+	ID_Usuario INT PRIMARY KEY auto_increment,
 	ID_Area INT,
 	ID_Perfil INT,
 	Nombre_Usuario NVARCHAR(128),
@@ -54,7 +54,7 @@ CREATE TABLE Usuario(
 );
 
 CREATE TABLE Cola(
-	ID_Cola INT PRIMARY KEY,
+	ID_Cola INT PRIMARY KEY auto_increment,
 	ID_Paciente INT,
 	ID_Usuario INT,
 	DATE_Inicio_Cola DATE,
@@ -66,7 +66,7 @@ CREATE TABLE Cola(
 );
 
 CREATE TABLE Cita(
-	ID_Cita INT PRIMARY KEY,
+	ID_Cita INT PRIMARY KEY auto_increment,
 	ID_Usuario INT,
 	ID_Paciente INT,
 	Titulo_Cita NVARCHAR(100),

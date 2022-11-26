@@ -1,6 +1,6 @@
 package dto
 
 type PatientMessage struct {
-	PatientId      int64  `json:"patient_id"`
-	PatientMessage string `json:"patient_message"`
+	PatientId      int64  `json:"ID_Paciente"`
+	PatientMessage string `json:"Message_Paciente"`
 }
