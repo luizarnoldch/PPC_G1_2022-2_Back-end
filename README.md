@@ -43,3 +43,86 @@ DB_NAME=
   - BD_ADDR=127.0.0.1
   - DB_PORT=3306
   - DB_NAME=schema_name
+
+# 3. End Points
+
+## 3.1. *Pacientes*   
+
+### Obtener Todos los pacientes
+
+```GET```
+````http://127.0.0.1:4000/paciente````
+
+### Obtener el Paciente segun {idPacient}
+
+```GET```
+````http://127.0.0.1:4000/paciente/{idPacient}````   
+
+### Agregar Paciente
+
+```POST```
+````http://127.0.0.1:4000/paciente````   
+
+### Editar Paciente segun {idPacient}
+
+```PUT```
+````http://127.0.0.1:4000/paciente/{idPacient}````
+
+### Eliminar Paciente segun {idPacient}
+
+```DELETE```
+````http://127.0.0.1:4000/paciente/{idPacient}````   
+
+## 3.2. *Areas*
+
+### Obtener Todos los Areas
+
+```GET```
+````http://127.0.0.1:4000/area````
+
+### Obtener el Area segun {idArea}
+
+```GET```
+````http://127.0.0.1:4000/area/{idArea}````
+
+### Agregar Area
+
+```POST```
+````http://127.0.0.1:4000/area````
+
+### Editar Area segun {idArea}
+
+```PUT```
+````http://127.0.0.1:4000/area/{idArea}````
+
+### Eliminar Area segun {idArea}
+
+```DELETE```
+````http://127.0.0.1:4000/area/{idArea}````   
+
+## 3.3. *Usuarios*
+
+### Obtener Todos los Usuarios
+
+```GET```
+````http://127.0.0.1:4000/user````
+
+### Obtener el Usuario segun {idUser}
+
+```GET```
+````http://127.0.0.1:4000/user/{idUser}````
+
+### Agregar Usuario
+
+```POST```
+````http://127.0.0.1:4000/user````
+
+### Editar Usuario segun {idUser}
+
+```PUT```
+````http://127.0.0.1:4000/user/{idUser}````
+
+### Eliminar Usuario segun {idUser}
+
+```DELETE```
+````http://127.0.0.1:4000/user/{idUser}````   
