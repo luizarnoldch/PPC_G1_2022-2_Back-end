@@ -57,8 +57,7 @@ func (db AreaDatabaseMySQL) SaveArea(req dto.AreaRequest) (*entities.Area, error
 		                Capacidad_Area,
 		                Tag_Area,
 		                Desc_Area)
-		VALUES(?,?,?,?,?,?,?,?)
-	`
+		VALUES(?,?,?,?,?,?,?,?)`
 	res, err := db.client.Exec(
 		areaQuery,
 		req.AreaName,
@@ -76,7 +75,7 @@ func (db AreaDatabaseMySQL) SaveArea(req dto.AreaRequest) (*entities.Area, error
 
 	id, errId := res.LastInsertId()
 	if errId != nil {
-		return nil, errors.New("error while getting id from patient")
+		return nil, errors.New("error while getting id from area")
 	}
 
 	area := entities.Area{

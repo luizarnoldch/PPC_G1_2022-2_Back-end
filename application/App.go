@@ -32,12 +32,17 @@ func Start() {
 	mySQLclient := GetMySQLClient()
 	patientDb := repositories.NewPatientDataMySQL(mySQLclient)
 	areaDb := repositories.NewAreaDataMySQL(mySQLclient)
+	userDb := repositories.NewUserDataMySQL(mySQLclient)
+
 	// -- Service
 	patientService := service.NewPatientService(patientDb)
 	areaService := service.NewAreaService(areaDb)
+	userService := service.NewUserService(userDb)
+
 	// -- Handler
 	patientHandler := PacientHandler{patientService}
 	areaHandler := AreaHandler{areaService}
+	userHandler := UserHandler{userService}
 
 	apiPacient := app.Group("/paciente")
 	apiPacient.Get("/", patientHandler.GetAllPatient)
@@ -52,6 +57,13 @@ func Start() {
 	apiArea.Post("/", areaHandler.PostArea)
 	apiArea.Put("/:idArea", areaHandler.PutArea)
 	apiArea.Delete("/:idArea", areaHandler.DeleteArea)
+
+	apiUser := app.Group("/user")
+	apiUser.Get("/", userHandler.GetAllUser)
+	apiUser.Get("/:idUser", userHandler.GetUser)
+	apiUser.Post("/", userHandler.PostUser)
+	apiUser.Put("/:idUser", userHandler.PutUser)
+	apiUser.Delete("/:idUser", userHandler.DeleteUser)
 
 	PORT := os.Getenv("PORT")
 
