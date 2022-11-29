@@ -116,7 +116,7 @@ func (db AreaDatabaseMySQL) UpdateArea(id int64, req dto.AreaRequest) (*entities
 		req.AreaDiscount,
 		id)
 	if err != nil {
-		return nil, errors.New("error while area")
+		return nil, errors.New("error while updating area")
 	}
 	rows, errNoRow := areaUpdate.RowsAffected()
 	if errNoRow != nil {

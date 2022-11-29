@@ -126,3 +126,30 @@ DB_NAME=
 
 ```DELETE```
 ````http://127.0.0.1:4000/user/{idUser}````   
+
+## 3.4. *Perfiles*
+
+### Obtener Todos los Perfiles
+
+```GET```
+````http://127.0.0.1:4000/profile````
+
+### Obtener el Perfil segun {idProfile}
+
+```GET```
+````http://127.0.0.1:4000/profile/{idProfile}````
+
+### Agregar Perfil
+
+```POST```
+````http://127.0.0.1:4000/profile````
+
+### Editar Perfil segun {idUser}
+
+```PUT```
+````http://127.0.0.1:4000/profile/{idProfile}````
+
+### Eliminar Perfil segun {idUser}
+
+```DELETE```
+````http://127.0.0.1:4000/profile/{idProfile}````   

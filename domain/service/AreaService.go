@@ -75,7 +75,7 @@ func (s DefaultAreaService) PostArea(request dto.AreaRequest) (*dto.AreaMessage,
 	if err != nil {
 		return nil, errors.New("can't save area")
 	}
-	response := *areaSave.ToAreaMessage(areaSave.AreaID, "area savec")
+	response := *areaSave.ToAreaMessage(areaSave.AreaID, "area saved")
 	return &response, nil
 }
 

@@ -122,7 +122,7 @@ func (db AreaDatabaseMySQL) UpdateUser(id int64, req dto.UserRequest) (*entities
 		req.Estado_Usuario,
 		id)
 	if err != nil {
-		return nil, errors.New("error while user")
+		return nil, errors.New("error while updating user")
 	}
 	rows, errNoRow := userUpdate.RowsAffected()
 	if errNoRow != nil {

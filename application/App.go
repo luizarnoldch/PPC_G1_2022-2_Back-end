@@ -30,19 +30,24 @@ func Start() {
 	// Creación de instancia Handler
 	// -- DB
 	mySQLclient := GetMySQLClient()
+
+	// -- Repositorys
 	patientDb := repositories.NewPatientDataMySQL(mySQLclient)
 	areaDb := repositories.NewAreaDataMySQL(mySQLclient)
 	userDb := repositories.NewUserDataMySQL(mySQLclient)
+	profileDb := repositories.NewProfileDataMySQL(mySQLclient)
 
 	// -- Service
 	patientService := service.NewPatientService(patientDb)
 	areaService := service.NewAreaService(areaDb)
 	userService := service.NewUserService(userDb)
+	profileService := service.NewProfileService(profileDb)
 
 	// -- Handler
 	patientHandler := PacientHandler{patientService}
 	areaHandler := AreaHandler{areaService}
 	userHandler := UserHandler{userService}
+	profileHandler := ProfileHandler{profileService}
 
 	apiPacient := app.Group("/paciente")
 	apiPacient.Get("/", patientHandler.GetAllPatient)
@@ -64,6 +69,13 @@ func Start() {
 	apiUser.Post("/", userHandler.PostUser)
 	apiUser.Put("/:idUser", userHandler.PutUser)
 	apiUser.Delete("/:idUser", userHandler.DeleteUser)
+
+	apiProfile := app.Group("/profile")
+	apiProfile.Get("/", profileHandler.GetAllProfiles)
+	apiProfile.Get("/:idProfile", profileHandler.GetProfile)
+	apiProfile.Post("/", profileHandler.PostProfile)
+	apiProfile.Put("/:idProfile", profileHandler.PutProfile)
+	apiProfile.Delete("/:idProfile", profileHandler.DeleteProfile)
 
 	PORT := os.Getenv("PORT")
 
