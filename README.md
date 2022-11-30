@@ -144,12 +144,39 @@ DB_NAME=
 ```POST```
 ````http://127.0.0.1:4000/profile````
 
-### Editar Perfil segun {idUser}
+### Editar Perfil segun {idProfile}
 
 ```PUT```
 ````http://127.0.0.1:4000/profile/{idProfile}````
 
-### Eliminar Perfil segun {idUser}
+### Eliminar Perfil segun {idProfile}
 
 ```DELETE```
 ````http://127.0.0.1:4000/profile/{idProfile}````   
+
+## 3.5. *Citas*
+
+### Obtener Todos las Citas
+
+```GET```
+````http://127.0.0.1:4000/citation````
+
+### Obtener la Cita segun {idCitation}
+
+```GET```
+````http://127.0.0.1:4000/citation/{idCitation}````
+
+### Agregar Cita
+
+```POST```
+````http://127.0.0.1:4000/citation````
+
+### Editar Cita segun {idCitation}
+
+```PUT```
+````http://127.0.0.1:4000/citation/{idCitation}````
+
+### Eliminar Cita segun {idCitation}
+
+```DELETE```
+````http://127.0.0.1:4000/citation/{idCitation}````   

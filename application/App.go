@@ -36,18 +36,21 @@ func Start() {
 	areaDb := repositories.NewAreaDataMySQL(mySQLclient)
 	userDb := repositories.NewUserDataMySQL(mySQLclient)
 	profileDb := repositories.NewProfileDataMySQL(mySQLclient)
+	citationDb := repositories.NewCitationDataMySQL(mySQLclient)
 
 	// -- Service
 	patientService := service.NewPatientService(patientDb)
 	areaService := service.NewAreaService(areaDb)
 	userService := service.NewUserService(userDb)
 	profileService := service.NewProfileService(profileDb)
+	citationService := service.NewCitationService(citationDb)
 
 	// -- Handler
 	patientHandler := PacientHandler{patientService}
 	areaHandler := AreaHandler{areaService}
 	userHandler := UserHandler{userService}
 	profileHandler := ProfileHandler{profileService}
+	citationHandler := CitationHandler{citationService}
 
 	apiPacient := app.Group("/paciente")
 	apiPacient.Get("/", patientHandler.GetAllPatient)
@@ -76,6 +79,13 @@ func Start() {
 	apiProfile.Post("/", profileHandler.PostProfile)
 	apiProfile.Put("/:idProfile", profileHandler.PutProfile)
 	apiProfile.Delete("/:idProfile", profileHandler.DeleteProfile)
+
+	apiCitation := app.Group("/citation")
+	apiCitation.Get("/", citationHandler.GetAllCitations)
+	apiCitation.Get("/:idCitation", citationHandler.GetCitation)
+	apiCitation.Post("/", citationHandler.PostCitation)
+	apiCitation.Put("/:idCitation", citationHandler.PutCitation)
+	apiCitation.Delete("/:idCitation", citationHandler.DeleteCitation)
 
 	PORT := os.Getenv("PORT")
 

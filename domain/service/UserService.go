@@ -37,7 +37,7 @@ func (s DefaultUserService) GetAllUsers() ([]dto.UserResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("areas: %d \n", len(users))
+	fmt.Printf("users: %d \n", len(users))
 	response := make([]dto.UserResponse, 0)
 
 	for _, user := range users {

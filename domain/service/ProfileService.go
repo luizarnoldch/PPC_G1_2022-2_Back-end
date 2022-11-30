@@ -37,7 +37,7 @@ func (s DefaultProfileService) GetAllProfiles() ([]dto.ProfileResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("areas: %d \n", len(profiles))
+	fmt.Printf("profiles: %d \n", len(profiles))
 	response := make([]dto.ProfileResponse, 0)
 
 	for _, profile := range profiles {
